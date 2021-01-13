@@ -1,9 +1,9 @@
-import React from 'react'
-
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 export default function ContentMain(props) {
-   
+    const dispatch = useDispatch(); 
+    
     let {lstTask} = props.projectDetail; 
-    console.log(lstTask);
    const renderListTask = () => {
    return  lstTask?.map((item, index) => {
        return <div className="card" key = {index} style={{ width: '17rem', height: '25rem' }}>
@@ -12,7 +12,12 @@ export default function ContentMain(props) {
 </div>
        <ul className="list-group list-group-flush">
        {item.lstTaskDeTail?.map((task, index) => {
-           return <li key = {index} className="list-group-item" data-toggle="modal" data-target="#infoModal" style={{ cursor: 'pointer' }}>
+           return <li key = {index} className="list-group-item" data-toggle="modal" data-target="#infoModal" style={{ cursor: 'pointer' }} onClick = {()=>{
+              dispatch({
+                  type : "GET_TASK_DETAIL_SAGA", 
+                  taskId : task.taskId
+              })
+           }}>
                <p className="font-weight-bold"> {task.taskName} </p>
                <div className="block" style={{ display: 'flex' }}>
                    <div className="block-left">
@@ -25,12 +30,7 @@ export default function ContentMain(props) {
                                <img src={mem.avatar} alt={mem.avatar} />
                            </div>
                        })}
-                           <div className="avatar">
-                               <img src={require("../../../assets/img/download (1).jfif")} alt="hinhAnh" />
-                           </div>
-                           <div className="avatar">
-                               <img src={require("../../../assets/img/download (2).jfif")} alt="hinhAnh" />
-                           </div>
+                          
                        </div>
                    </div>
                </div>
