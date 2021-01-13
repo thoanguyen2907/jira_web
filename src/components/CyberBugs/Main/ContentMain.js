@@ -1,8 +1,9 @@
 import React from 'react'
 
 export default function ContentMain(props) {
-    console.log(props.projectDetail);
+   
     let {lstTask} = props.projectDetail; 
+    console.log(lstTask);
    const renderListTask = () => {
    return  lstTask?.map((item, index) => {
        return <div className="card" key = {index} style={{ width: '17rem', height: '25rem' }}>
@@ -10,18 +11,20 @@ export default function ContentMain(props) {
          {item.statusName}
 </div>
        <ul className="list-group list-group-flush">
-           <li className="list-group-item" data-toggle="modal" data-target="#infoModal" style={{ cursor: 'pointer' }}>
-               <p>
-                   Each issue has a single reporter but can have multiple
-                   assignees
-</p>
+       {item.lstTaskDeTail?.map((task, index) => {
+           return <li key = {index} className="list-group-item" data-toggle="modal" data-target="#infoModal" style={{ cursor: 'pointer' }}>
+               <p className="font-weight-bold"> {task.taskName} </p>
                <div className="block" style={{ display: 'flex' }}>
                    <div className="block-left">
-                       <i className="fa fa-bookmark" />
-                       <i className="fa fa-arrow-up" />
+                       <p className="text-danger">{task.priorityTask.priority}</p>
                    </div>
                    <div className="block-right">
                        <div className="avatar-group" style={{ display: 'flex' }}>
+                       {task.assigness?.map((mem, index) => {
+                           return  <div className="avatar" key = {index}>
+                               <img src={mem.avatar} alt={mem.avatar} />
+                           </div>
+                       })}
                            <div className="avatar">
                                <img src={require("../../../assets/img/download (1).jfif")} alt="hinhAnh" />
                            </div>
@@ -32,29 +35,9 @@ export default function ContentMain(props) {
                    </div>
                </div>
            </li>
-           <li className="list-group-item">
-               <p>
-                   Each issue has a single reporter but can have multiple
-                   assignees
-</p>
-               <div className="block" style={{ display: 'flex' }}>
-                   <div className="block-left">
-                       <i className="fa fa-check-square" />
-                       <i className="fa fa-arrow-up" />
-                   </div>
-                   <div className="block-right">
-                       <div className="avatar-group" style={{ display: 'flex' }}>
-                           <div className="avatar">
-                               <img src={require("../../../assets/img/download (1).jfif")} alt="hinhAnh" />
-                           </div>
-                           <div className="avatar">
-                               <img src={require("../../../assets/img/download (2).jfif")} alt="hinhAnh" />
-                           </div>
-                       </div>
-                   </div>
-               </div>
-           </li>
-           <li className="list-group-item">Vestibulum at eros</li>
+       })}
+           
+          
        </ul>
    </div>
    })
