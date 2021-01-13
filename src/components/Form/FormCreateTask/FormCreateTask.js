@@ -222,7 +222,7 @@ for (let i = 10; i < 36; i++) {
                         onEditorChange={handleEditorChange}
                 />
             </div>
-            <button type = "submit"> Submit </button>
+  
         </div>
     )
 }
