@@ -37,6 +37,8 @@ yield all([
     TaskTypeSaga.theoDoiGetAllTypeTaskSaga(),
     PrioritySaga.theoDoiGetAllPriorityList(),
     TaskSaga.theoDoiCreateTaskSaga(),
+    TaskSaga.theoDoiGetTaskDetailSaga(),
+    TaskSaga.theoDoiUpdateTaskStatusSaga(), 
     StatusSaga.theoDoiGetAllStatusSaga()
 ])
 

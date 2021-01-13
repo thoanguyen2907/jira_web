@@ -46,6 +46,46 @@ export function* theoDoiCreateTaskSaga(){
     yield takeLatest("CREATE_TASK_SAGA", createTaskSaga); 
 }
 
+function * getTaskDetailSaga (action){
+    try {     
+        //Gọi api lấy dữ liệu về
+        const {data,status} = yield call(() => taskService.getTaskDetail(action.taskId)); 
+        //Gọi api thành công thì dispatch lên reducer thông qua put
+        if (status === STATUSCODE.SUCCESS) {
+            yield put ({
+                type : "GET_TASK_DETAIL_REDUCER", 
+                taskDetailModal: data.content
+            })
+        }
+    } catch (err) {
+        console.log(err.response.data);
+    } 
+}
+export function* theoDoiGetTaskDetailSaga(){
+    yield takeLatest("GET_TASK_DETAIL_SAGA", getTaskDetailSaga); 
+}
+
+function * updateTaskStatusSaga (action){
+    try {     
+        //Gọi api lấy dữ liệu về
+        const {data,status} = yield call(() => taskService.updateStatusTask(action.taskStatusUpdate));
+        console.log(status); 
+        //Gọi api thành công thì dispatch lên reducer thông qua put
+        if (status === STATUSCODE.SUCCESS) {
+            yield put ({
+                type : "GET_PROJECT_DETAIL_SAGA", 
+                id : action.taskStatusUpdate.id
+            })
+        }
+    } catch (err) {
+        console.log(err.response.data);
+    } 
+}
+export function* theoDoiUpdateTaskStatusSaga(){
+    yield takeLatest("UPDATE_TASK_STATUS_SAGA", updateTaskStatusSaga); 
+}
+
+
 
 
 
