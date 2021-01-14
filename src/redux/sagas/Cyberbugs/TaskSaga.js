@@ -76,6 +76,10 @@ function * updateTaskStatusSaga (action){
                 type : "GET_PROJECT_DETAIL_SAGA", 
                 id : action.taskStatusUpdate.id
             })
+            yield put ({
+                type : "GET_TASK_DETAIL_SAGA", 
+                taskId : action.taskStatusUpdate.taskId
+            })
         }
     } catch (err) {
         console.log(err.response.data);
