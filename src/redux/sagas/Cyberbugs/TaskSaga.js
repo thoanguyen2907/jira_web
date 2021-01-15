@@ -6,8 +6,9 @@ import { DISPLAY_LOADING, HIDE_LOADING } from "../../constants/LoadingConst";
 import { projectService } from "../../../services/ProjectService";
 import { openNotificationWithIcon } from "../../../util/Notification/notificationCyberbugs";
 import { history } from "../../../util/history/history";
-import { GET_ALL_PROJECT_SAGA } from "../../constants/Cyberbugs/Cyberbugs";
+import { GET_ALL_PROJECT_SAGA, UPDATE_TASK_SAGA, HANDLE_CHANGE_POST_API, CHANGE_TASK_MODAL, CHANGE_ASSINGEES, REMOVE_USER_ASSIGN } from "../../constants/Cyberbugs/Cyberbugs";
 import { taskService } from "../../../services/TaskService";
+import { select } from "redux-saga/effects";
 
 
 function * createTaskSaga (action){
@@ -52,6 +53,7 @@ function * getTaskDetailSaga (action){
         const {data,status} = yield call(() => taskService.getTaskDetail(action.taskId)); 
         //Gọi api thành công thì dispatch lên reducer thông qua put
         if (status === STATUSCODE.SUCCESS) {
+            console.log("GET_TASK_DETAIL_SAGA",  status);
             yield put ({
                 type : "GET_TASK_DETAIL_REDUCER", 
                 taskDetailModal: data.content
@@ -69,7 +71,6 @@ function * updateTaskStatusSaga (action){
     try {     
         //Gọi api lấy dữ liệu về
         const {data,status} = yield call(() => taskService.updateStatusTask(action.taskStatusUpdate));
-        console.log(status); 
         //Gọi api thành công thì dispatch lên reducer thông qua put
         if (status === STATUSCODE.SUCCESS) {
             yield put ({
@@ -87,6 +88,80 @@ function * updateTaskStatusSaga (action){
 }
 export function* theoDoiUpdateTaskStatusSaga(){
     yield takeLatest("UPDATE_TASK_STATUS_SAGA", updateTaskStatusSaga); 
+}
+
+function * handleChangePostApi(action) {
+    console.log(action);
+//gọi action làm thay đổi taskDetail modal 
+switch(action.actionType) {
+    case CHANGE_TASK_MODAL: {
+        let {name, value} = action; 
+        yield put ({
+            type: CHANGE_TASK_MODAL, 
+            name, 
+            value
+        })
+    }
+    break; 
+    case CHANGE_ASSINGEES: {
+        const { userSelect } = action;
+        yield put({
+            type: CHANGE_ASSINGEES,
+            userSelect
+        })
+
+    };break;
+    // case CHANGE_ASSINGEES: { 
+    //     let {userSelect} = action; 
+    //     console.log("userSelect", userSelect);
+    //     yield put ({
+    //         type: CHANGE_ASSINGEES, 
+    //         userSelect
+    //     })
+    // }
+    // break; 
+    case REMOVE_USER_ASSIGN : {
+        let {userId} = action; 
+        yield put ({
+            type : REMOVE_USER_ASSIGN,
+            userId 
+        })
+    } 
+    break; 
+    default : 
+    console.log("abc");
+
+}
+//Save qua api updateTaskSaga 
+//lấy dữ liệu từ state.taskDetailModal 
+let {taskDetailModal} = yield select(state => state.TaskReducer); 
+console.log("taskDetailModal sau khi thay đỗi",  taskDetailModal);
+//biến đổi dữ liệu state.taskDetailModal thành dữ liệu api cần 
+const listUserAssign = taskDetailModal.assigness?.map((user, index) => {
+    return user.id
+})
+const taskUpdateApi= {...taskDetailModal, listUserAssign}; 
+try {
+    const {data, status} = yield call(() => taskService.updateTask(taskUpdateApi))
+    if(status === STATUSCODE.SUCCESS){
+        
+
+        yield put ({
+            type : "GET_PROJECT_DETAIL_SAGA", 
+            id : taskUpdateApi.projectId
+        })
+        yield put ({
+            type : "GET_TASK_DETAIL_SAGA", 
+            taskId : taskUpdateApi.taskId
+        })
+    }
+} catch(error){
+    console.log(error.response?.data)
+}
+
+}
+export function *theoDoiHandleChangePostApi(action) {
+    yield takeLatest(HANDLE_CHANGE_POST_API, handleChangePostApi)
 }
 
 

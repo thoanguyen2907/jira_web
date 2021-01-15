@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'; 
 import { useDispatch, useSelector } from 'react-redux';
-import { CHANGE_ASSINGEES, CHANGE_TASK_MODAL, GET_ALL_PRIORITY_LIST_SAGA, GET_ALL_STATUS_SAGA, GET_ALL_TYPE_TASK_SAGA } from '../../../redux/constants/Cyberbugs/Cyberbugs';
+import { CHANGE_ASSINGEES, CHANGE_TASK_MODAL, GET_ALL_PRIORITY_LIST_SAGA, GET_ALL_STATUS_SAGA, GET_ALL_TYPE_TASK_SAGA, HANDLE_CHANGE_POST_API, REMOVE_USER_ASSIGN } from '../../../redux/constants/Cyberbugs/Cyberbugs';
 import ReactHtmlParser from "react-html-parser";
 import { Editor } from '@tinymce/tinymce-react'; 
 import { Select } from 'antd';
@@ -21,6 +21,9 @@ export default function ModalCyberBugs() {
         dispatch({ type: GET_ALL_PRIORITY_LIST_SAGA });
         dispatch({ type: GET_ALL_TYPE_TASK_SAGA}); 
     }, [])
+
+    console.log('taskDetailModal', taskDetailModal);
+
     const renderDescription = () => {
         const jsxDescription = ReactHtmlParser(taskDetailModal.description);
         return <div> 
@@ -48,16 +51,28 @@ export default function ModalCyberBugs() {
                         }}
                 />
                 <button className="btn btn-primary" onClick = {()=>{
-                     dispatch({
-                        type : CHANGE_TASK_MODAL, 
+                    dispatch({
+                        type: HANDLE_CHANGE_POST_API, 
+                        actionType : CHANGE_TASK_MODAL, 
                         name : "description", 
                         value : content
                     })
+                    //  dispatch({
+                    //     type : CHANGE_TASK_MODAL, 
+                    //     name : "description", 
+                    //     value : content
+                    // })
                     setVisibleEditor(false)
                 }}
                 >Save</button>
                 <button className="btn btn-success" onClick = {()=>{
-                    setHistoryContent(historyContent)
+                    // setHistoryContent(historyContent)
+                    dispatch({
+                        type:HANDLE_CHANGE_POST_API,
+                        actionType:CHANGE_TASK_MODAL,
+                        name: 'description',
+                        value: historyContent
+                    })
                     setVisibleEditor(false)
               
                 }}>Close</button>
@@ -71,10 +86,16 @@ export default function ModalCyberBugs() {
     const handleChange = (e) => {
         const {name, value} = e.target; 
         dispatch({
-            type : CHANGE_TASK_MODAL,
+            type: HANDLE_CHANGE_POST_API, 
+            actionType:CHANGE_TASK_MODAL,
             name, 
             value
         })
+        // dispatch({
+        //     type : CHANGE_TASK_MODAL,
+        //     name, 
+        //     value
+        // })
     }
 
     const renderTimeTracking = () => {
@@ -110,7 +131,7 @@ export default function ModalCyberBugs() {
         </div>
         </div>
     }
-    console.log(taskDetailModal);
+    
     return (
         <div className="modal fade" id="infoModal" tabIndex={-1} role="dialog" aria-labelledby="infoModal" aria-hidden="true">
                 <div className="modal-dialog modal-info">
@@ -218,7 +239,8 @@ export default function ModalCyberBugs() {
                                     <div className="col-4">
                                         <div className="status">
                                             <h6>STATUS</h6>
-                                            <select name = "statusId" className="custom-select" onChange = {(e)=>{                                            
+                                            <select name = "statusId" className="custom-select" onChange = {(e)=>{      
+                                                handleChange(e)                                      
                                                 // dispatch({
                                                 //     type: "UPDATE_TASK_STATUS_SAGA", 
                                                 //     taskStatusUpdate : {
@@ -236,7 +258,8 @@ export default function ModalCyberBugs() {
                                             <h6>ASSIGNEES</h6>
                                             <div>
                                             {
-                                                taskDetailModal.assigness.map((user, index) => {
+                                                taskDetailModal.assigness?.map((user, index) => {
+                                                    console.log(user)
                                                     return <div key={index} style={{ display: 'flex' }} className="item">
                                                         <div className="avatar">
                                                             <img src={user.avatar} alt={user.avatar} />
@@ -246,9 +269,14 @@ export default function ModalCyberBugs() {
                                                             <i className="fa fa-times" style={{ marginLeft: 5, cursor: "pointer" }}
                                                             onClick = {()=>{
                                                                 dispatch({
-                                                                    type : "REMOVE_USER_ASSIGN",
-                                                                    userId : user.id
+                                                                    type: HANDLE_CHANGE_POST_API, 
+                                                                    actionType: REMOVE_USER_ASSIGN, 
+                                                                    userId : user.id 
                                                                 })
+                                                                // dispatch({
+                                                                //     type : "REMOVE_USER_ASSIGN",
+                                                                //     userId : user.id
+                                                                // })
                                                             }} />
                                                         </p>
                                                     </div>
@@ -259,7 +287,7 @@ export default function ModalCyberBugs() {
                                                     <Select name="lstUser" className="form-control"
                                                     value = "Add more"
                                                     options =  {projectDetail.members?.filter(mem => {
-                                                            let index = taskDetailModal.assigness?.findIndex(us => us.id === mem.userId); 
+                                                            let index = taskDetailModal.assigness?.findIndex(us => us.id == mem.userId); 
                                                             if(index !== -1) {
                                                                 return false; 
                                                             } 
@@ -273,11 +301,17 @@ export default function ModalCyberBugs() {
                                                            
                                                         let userSelect = projectDetail.members.find(mem => mem.userId == value); 
                                                         userSelect = {...userSelect, id: userSelect.userId}
+                                                        console.log("userSelect CHANGE_ASSINGEES ", userSelect)
                                                         //dispatchReducer
                                                         dispatch({
-                                                            type: CHANGE_ASSINGEES,
+                                                            type: HANDLE_CHANGE_POST_API,
+                                                            actionType: CHANGE_ASSINGEES,
                                                             userSelect
-                                                        }) 
+                                                        })
+                                                        // dispatch({
+                                                        //     type: CHANGE_ASSINGEES,
+                                                        //     userSelect
+                                                        // }) 
                                                         } else {
                                                             return;  
                                                         }
@@ -302,7 +336,9 @@ export default function ModalCyberBugs() {
                                         </div>
                                         <div className="priority" name = "priorityId" style={{ marginBottom: 20 }}>
                                             <h6>PRIORITY</h6>
-                                            <select>
+                                            <select name="priorityId" className="form-control" value={taskDetailModal.priorityId} onChange={(e) => {
+                                            handleChange(e);
+                                        }}>
                                             {arrPriority.map((item, index) => {
                                                 return <option key={index} value={item.priorityId}>{item.priority}</option>
                                             })}
