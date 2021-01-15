@@ -10,25 +10,12 @@ const initialState = {
       "id": 1,
       "taskType": "bug"
     },
-    "assigness": [
-      {
-        "id": 68,
-        "avatar": "https://ui-avatars.com/api/?name=khải",
-        "name": "khải",
-        "alias": "khai"
-      },
-      {
-        "id": 69,
-        "avatar": "https://ui-avatars.com/api/?name=thoa",
-        "name": "thoa",
-        "alias": "thoa"
-      }
-    ],
+    "assigness": [],
     "lstComment": [],
     "taskId": 54,
     "taskName": "task 1",
     "alias": "task-1",
-    "description": "<p>Before you start work on an issue, you can set a time or other type of estimate to calculate how much work you believe it'll take to resolve it. Once you've started to work on a specific issue, log time to keep a record of it.</p>\n<p>&nbsp;</p>\n<ul>\n<li>Open the issue and select&nbsp;&bull;&bull;&bull; &gt;&nbsp;Time tracking</li>\n<li>Fill in the<strong>&nbsp;Time Spent</strong>&nbsp;field</li>\n<li>Fill in the <strong>Time Remaining</strong> field and click Save</li>\n</ul>\n<p>&nbsp;</p>\n<h3><u>That's it!</u></h3>\n<h1>💯💯</h1>\n<p>&nbsp;</p>",
+    "description": "",
     "statusId": "2",
     "originalEstimate": 30,
     "timeTrackingSpent": 10,
@@ -49,8 +36,15 @@ const initialState = {
           let {name, value} = action; 
           return {...state, taskDetailModal: {...state.taskDetailModal, [name] : value}}
         }
+        // case CHANGE_ASSINGEES : {
+        //   state.taskDetailModal.assigness = [...state.taskDetailModal.assigness, action.userSelect];
+        //   console.log("state taskmodal assigness", state.taskDetailModal.assigness);
+        //   return {...state}
+        // }
         case CHANGE_ASSINGEES : {
-          state.taskDetailModal.assigness = [...state.taskDetailModal.assigness, action.userSelect];
+          state.taskDetailModal.assigness = [...state.taskDetailModal.assigness,action.userSelect];
+          console.log("state taskmodal assigness", state.taskDetailModal.assigness);
+          // console.log('state',state)
           return {...state}
         }
         case "REMOVE_USER_ASSIGN" : {

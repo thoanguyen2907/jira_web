@@ -39,6 +39,8 @@ yield all([
     TaskSaga.theoDoiCreateTaskSaga(),
     TaskSaga.theoDoiGetTaskDetailSaga(),
     TaskSaga.theoDoiUpdateTaskStatusSaga(), 
+    TaskSaga.theoDoiHandleChangePostApi(), 
+
     StatusSaga.theoDoiGetAllStatusSaga()
 ])
 
