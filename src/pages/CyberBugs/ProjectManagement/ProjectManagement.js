@@ -21,8 +21,8 @@ export default function ProjectManagement(props) {
     useEffect(()=>{
         dispatch({
             type: GET_LIST_PROJECT_SAGA
-        }, [])
-    })
+        })
+    }, [])
    const handleChange = (pagination, filters, sorter) => {
     setState({
       filteredInfo: filters,

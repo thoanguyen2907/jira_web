@@ -138,10 +138,10 @@ switch(action.actionType) {
 let {taskDetailModal} = yield select(state => state.TaskReducer); 
 console.log("taskDetailModal sau khi thay đỗi",  taskDetailModal);
 //biến đổi dữ liệu state.taskDetailModal thành dữ liệu api cần 
-const listUserAssign = taskDetailModal.assigness?.map((user, index) => {
+const listUserAsign = taskDetailModal.assigness?.map((user, index) => {
     return user.id
 })
-const taskUpdateApi= {...taskDetailModal, listUserAssign}; 
+const taskUpdateApi= {...taskDetailModal, listUserAsign}; 
 try {
     const {data, status} = yield call(() => taskService.updateTask(taskUpdateApi))
     if(status === STATUSCODE.SUCCESS){
