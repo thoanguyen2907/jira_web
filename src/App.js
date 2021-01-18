@@ -33,7 +33,7 @@ export default class App extends Component {
         <HomeTemplate path="/home" exact Component = {Home}/>
         <HomeTemplate exact  path="/contact" Component={Contact} />
         <HomeTemplate exact  path="/about" Component={About} />
-        <CyberbugsTemplate exact path="/"  Component={ProjectManagement} />
+        
         <UserLoginTemplate exact path="/login"  Component={LoginCyberBugs} />
         <HomeTemplate exact path="/detail/:id"  Component={Detail} />
         <HomeTemplate exact path="/profile"  Component={Profile} />
@@ -41,10 +41,11 @@ export default class App extends Component {
         <HomeTemplate  exact path="/todolistrfc"  Component={TodolistRFC} />
         <HomeTemplate  exact path="/todolistredux"  Component={ToDoListRedux} />
         <HomeTemplate  exact path="/todolistsaga"  Component={BaiTapToDoListSaga} />      
-        <CyberbugsTemplate exact path = "/cyberbugs" Component = {IndexCyberBugs}/>
+        <CyberbugsTemplate exact path = "/cyberbugs" Component = {ProjectManagement}/>
         <CyberbugsTemplate exact path = "/createproject" Component = {CreateProject}/>
         <CyberbugsTemplate exact path = "/projectmanagement" Component = {ProjectManagement}/>
         <CyberbugsTemplate exact path = "/projectdetail/:projectId" Component = {IndexCyberBugs}/>
+        <CyberbugsTemplate exact path="/"  Component={ProjectManagement} />
         <Route  path="*"  Component={PageNotFound} />      
       </Switch>
 
