@@ -110,7 +110,8 @@ switch(action.actionType) {
             userSelect
         })
 
-    };break;
+    };
+    break;
     // case CHANGE_ASSINGEES: { 
     //     let {userSelect} = action; 
     //     console.log("userSelect", userSelect);
@@ -160,9 +161,12 @@ try {
 }
 
 }
+
 export function *theoDoiHandleChangePostApi(action) {
     yield takeLatest(HANDLE_CHANGE_POST_API, handleChangePostApi)
 }
+
+
 
 
 

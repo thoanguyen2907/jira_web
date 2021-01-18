@@ -142,7 +142,7 @@ export default function ModalCyberBugs() {
                                 <select name="typeId" value = {taskDetailModal.typeId} onChange={handleChange}>
                                     {arrTaskType?.map((type, index) => {
                                         return <option key={index} value = {type.id}> {type.taskType}</option>
-                                    })}
+                                    })} 
                                 </select>
                                 <span>{taskDetailModal.taskName}</span>
                             </div>
@@ -293,7 +293,8 @@ export default function ModalCyberBugs() {
                                                             } 
                                                             return true
                                                         })?.map((mem, index) => {
-                                                            return {value : mem.userId, label : mem.name}                                                 })}
+                                                            return {value : mem.userId, label : mem.name}    
+                                                             })}
                                                     optionFilterProp = "label"
                                                     style = {{width: "100%"}}
                                                     onSelect = {(value) => {
@@ -301,7 +302,7 @@ export default function ModalCyberBugs() {
                                                            
                                                         let userSelect = projectDetail.members.find(mem => mem.userId == value); 
                                                         userSelect = {...userSelect, id: userSelect.userId}
-                                                        console.log("userSelect CHANGE_ASSINGEES ", userSelect)
+                                                    
                                                         //dispatchReducer
                                                         dispatch({
                                                             type: HANDLE_CHANGE_POST_API,
