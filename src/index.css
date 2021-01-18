@@ -14,7 +14,9 @@
     width: 4%;
     transition: 0.2s;
   }
-  
+  .menu {
+         margin-left: 0% !important;
+  }
   .sideBar:hover {
     width: 15%;
   }

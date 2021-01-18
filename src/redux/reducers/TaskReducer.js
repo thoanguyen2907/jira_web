@@ -43,7 +43,7 @@ const initialState = {
         // }
         case CHANGE_ASSINGEES : {
           state.taskDetailModal.assigness = [...state.taskDetailModal.assigness,action.userSelect];
-          console.log("state taskmodal assigness", state.taskDetailModal.assigness);
+          console.log("state task modal assigness", state.taskDetailModal.assigness);
           // console.log('state',state)
           return {...state}
         }
